@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>FinServe - Loan Application</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f4f6f9; margin: 0; padding: 20px; }
+        .container { max-width: 600px; background: white; margin: 0 auto; padding: 30px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        h2 { color: #003366; margin-top: 0; }
+        .form-group { margin-bottom: 20px; }
+        label { display: block; font-weight: bold; margin-bottom: 5px; color: #333; }
+        input[type="text"], input[type="number"], select { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+        .checkbox-group { display: flex; flex-direction: column; gap: 8px; margin-top: 5px; }
+        .checkbox-item { display: flex; align-items: center; gap: 8px; font-weight: normal; }
+        button { width: 100%; padding: 12px; background-color: #003366; color: white; border: none; border-radius: 4px; font-size: 16px; cursor: pointer; }
+        button:hover { background-color: #002244; }
+        .alert { padding: 12px; border-radius: 4px; margin-top: 20px; display: none; text-align: center; font-weight: bold; }
+        .alert-error { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .alert-success { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Digital Loan Application</h2>
+        <form id="loan-form" onsubmit="submitLoanApplication(event)">
+            <div class="form-group">
+                <label for="loan-product">Loan Product</label>
+                <select id="loan-product" name="loanProduct">
+                    <option value="Personal Loan">Personal Loan</option>
+                    <option value="Auto Loan">Auto Loan</option>
+                    <option value="Home Equity Loan">Home Equity Loan</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="requested-amount">Requested Loan Amount ($)</label>
+                <input type="number" id="requested-amount" name="requestedAmount" placeholder="e.g. 25000">
+            </div>
+
+            <div class="form-group">
+                <label>Mandatory Supporting Documents (FR-001)</label>
+                <div class="checkbox-group">
+                    <label class="checkbox-item"><input type="checkbox" id="doc-id" name="docId"> Valid Government ID</label>
+                    <label class="checkbox-item"><input type="checkbox" id="doc-income" name="docIncome"> Proof of Income / Payslip</label>
+                    <label class="checkbox-item"><input type="checkbox" id="doc-address" name="docAddress"> Proof of Address</label>
+                </div>
+            </div>
+
+            <button type="submit" id="submit-loan-btn">Submit Application</button>
+
+            <div id="error-banner" class="alert alert-error"></div>
+            <div id="success-banner" class="alert alert-success"></div>
+        </form>
+    </div>
+
+    <script>
+        const userObj = JSON.parse(sessionStorage.getItem('currentUser') || '{"username":"customer01","limit":50000,"hasActiveApp":false}');
+
+        function submitLoanApplication(event) {
+            event.preventDefault();
+            const errDiv = document.getElementById('error-banner');
+            const successDiv = document.getElementById('success-banner');
+            errDiv.style.display = 'none';
+            successDiv.style.display = 'none';
+
+            const product = document.getElementById('loan-product').value;
+            const amount = parseFloat(document.getElementById('requested-amount').value);
+            const docId = document.getElementById('doc-id').checked;
+            const docIncome = document.getElementById('doc-income').checked;
+            const docAddress = document.getElementById('doc-address').checked;
+
+            // FR-001 Mandatory Document Validation
+            if (!docId || !docIncome || !docAddress) {
+                const missing = [];
+                if (!docId) missing.push('Valid Government ID');
+                if (!docIncome) missing.push('Proof of Income');
+                if (!docAddress) missing.push('Proof of Address');
+                errDiv.style.display = 'block';
+                errDiv.textContent = 'Submission Failed: Missing mandatory supporting document(s): ' + missing.join(', ') + '.';
+                return;
+            }
+
+            // FR-002 Loan Eligibility Limit Validation
+            if (isNaN(amount) || amount <= 0) {
+                errDiv.style.display = 'block';
+                errDiv.textContent = 'Submission Failed: Invalid requested loan amount.';
+                return;
+            }
+            if (amount > userObj.limit) {
+                errDiv.style.display = 'block';
+                errDiv.textContent = 'Submission Failed: Requested loan amount ($' + amount.toLocaleString() + ') exceeds approved eligibility limit of $' + userObj.limit.toLocaleString() + '.';
+                return;
+            }
+
+            // FR-003 Duplicate Active Application Prevention
+            if (userObj.hasActiveApp && (userObj.activeProduct || 'Personal Loan') === product) {
+                errDiv.style.display = 'block';
+                errDiv.textContent = 'Submission Failed: You already have an active application for ' + product + '. Duplicate applications are not permitted.';
+                return;
+            }
+
+            successDiv.style.display = 'block';
+            successDiv.textContent = 'Application Submitted Successfully! Reference ID: APP-' + Math.floor(100000 + Math.random() * 900000);
+        }
+    </script>
+</body>
+</html>
