@@ -46,22 +46,11 @@ score += 30; // 30 points for code completion
 // STEP 2: Execute Learner Playwright Test Suite
 console.log('\n🚀 Executing Learner Playwright Suite...');
 try {
-  const stdout = execSync('npx playwright test --reporter=json', { encoding: 'utf-8' });
-  const results = JSON.parse(stdout);
-
-  const passedTests = results.stats.expected;
-  const totalTests = results.stats.total;
-
-  console.log(`\n📊 Execution Results: ${passedTests}/${totalTests} tests passed.`);
-
-  if (passedTests === totalTests && totalTests > 0) {
-    console.log('✅ All Playwright assertion checks passed!');
-    score += 70; // 70 points for passing all test cases
-  } else {
-    const earned = Math.round((passedTests / totalTests) * 70);
-    score += earned;
-    console.warn(`⚠️  Partial credit awarded: +${earned}/70 points.`);
-  }
+  // Execute tests and let exit code determine success
+  execSync('npx playwright test', { stdio: 'inherit' });
+  
+  console.log('\n✅ All Playwright assertion checks passed!');
+  score += 70; // 70 points for passing all test cases
 
 } catch (error) {
   console.error('\n❌ Test Execution Failed. Playwright detected test failures or syntax errors.');
