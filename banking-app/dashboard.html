@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>FinServe - Customer Dashboard</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f4f6f9; margin: 0; }
+        header { background: #003366; color: white; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; }
+        .container { padding: 30px; max-width: 900px; margin: auto; }
+        .card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); margin-bottom: 20px; }
+        h3 { color: #003366; margin-top: 0; }
+        a.btn { display: inline-block; padding: 10px 18px; background: #003366; color: white; text-decoration: none; border-radius: 4px; }
+    </style>
+</head>
+<body id="dashboard">
+    <header>
+        <h2>FinServe Customer Dashboard</h2>
+        <a href="login.html" style="color: white; text-decoration: none;" id="sign-out">Sign Out</a>
+    </header>
+    <div class="container">
+        <div class="card">
+            <h3>Welcome back, <span id="user-display">Customer</span>!</h3>
+            <p>Approved Loan Eligibility Limit: <strong style="color: green;">$<span id="eligibility-limit">50,000</span></strong></p>
+            <p>Active Applications: <strong id="active-app-status">None</strong></p>
+            <a href="loan-application.html" class="btn" id="apply-loan-btn">Apply for New Loan</a>
+        </div>
+    </div>
+
+    <script>
+        const userObj = JSON.parse(sessionStorage.getItem('currentUser') || '{"username":"customer01","limit":50000,"hasActiveApp":false}');
+        document.getElementById('user-display').textContent = userObj.username;
+        document.getElementById('eligibility-limit').textContent = userObj.limit.toLocaleString();
+        if (userObj.hasActiveApp) {
+            document.getElementById('active-app-status').textContent = '1 Active (' + (userObj.activeProduct || 'Personal Loan') + ')';
+            document.getElementById('active-app-status').style.color = '#d9534f';
+        }
+    </script>
+</body>
+</html>
