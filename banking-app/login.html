@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>FinServe - Customer Login</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f4f6f9; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .login-card { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); width: 340px; }
+        h2 { color: #003366; text-align: center; margin-bottom: 20px; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; font-size: 14px; margin-bottom: 5px; color: #333; }
+        input { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+        button { width: 100%; padding: 10px; background-color: #003366; color: white; border: none; border-radius: 4px; font-size: 16px; cursor: pointer; }
+        button:hover { background-color: #002244; }
+        .error-message { color: #d9534f; font-size: 13px; margin-top: 10px; text-align: center; display: none; }
+    </style>
+</head>
+<body>
+    <div class="login-card">
+        <h2>FinServe eBanking</h2>
+        <form id="login-form" onsubmit="handleLogin(event)">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" placeholder="Enter username">
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" placeholder="Enter password">
+            </div>
+            <button type="submit" id="login-button">Sign In</button>
+            <div id="error-message" class="error-message"></div>
+        </form>
+    </div>
+
+    <script>
+        function handleLogin(event) {
+            event.preventDefault();
+            const user = document.getElementById('username').value.trim();
+            const pass = document.getElementById('password').value;
+            const errDiv = document.getElementById('error-message');
+
+            if (!user) {
+                errDiv.style.display = 'block';
+                errDiv.textContent = 'Username cannot be empty.';
+                return;
+            }
+            if (!pass) {
+                errDiv.style.display = 'block';
+                errDiv.textContent = 'Password cannot be empty.';
+                return;
+            }
+
+            if (user === 'customer01' && pass === 'Bank12345') {
+                sessionStorage.setItem('currentUser', JSON.stringify({ username: 'customer01', limit: 50000, hasActiveApp: false }));
+                window.location.href = 'dashboard.html';
+            } else if (user === 'customer_active' && pass === 'Bank12345') {
+                sessionStorage.setItem('currentUser', JSON.stringify({ username: 'customer_active', limit: 75000, hasActiveApp: true, activeProduct: 'Personal Loan' }));
+                window.location.href = 'dashboard.html';
+            } else if (user === 'customer_low_limit' && pass === 'Bank12345') {
+                sessionStorage.setItem('currentUser', JSON.stringify({ username: 'customer_low_limit', limit: 10000, hasActiveApp: false }));
+                window.location.href = 'dashboard.html';
+            } else {
+                errDiv.style.display = 'block';
+                errDiv.textContent = 'Invalid username or password.';
+            }
+        }
+    </script>
+</body>
+</html>
