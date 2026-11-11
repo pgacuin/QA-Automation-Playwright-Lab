@@ -1,0 +1,21 @@
+{
+  "validCustomer": {
+    "username": "customer01",
+    "password": "Bank12345",
+    "eligibilityLimit": 50000,
+    "hasActiveApplication": false
+  },
+  "customerWithActiveApp": {
+    "username": "customer_active",
+    "password": "Bank12345",
+    "eligibilityLimit": 75000,
+    "hasActiveApplication": true,
+    "activeLoanProduct": "Personal Loan"
+  },
+  "customerLowLimit": {
+    "username": "customer_low_limit",
+    "password": "Bank12345",
+    "eligibilityLimit": 10000,
+    "hasActiveApplication": false
+  }
+}
