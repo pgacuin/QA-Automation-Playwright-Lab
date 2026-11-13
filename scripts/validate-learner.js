@@ -1,82 +1,80 @@
+cat << 'EOF' > scripts/validate-learner.js
 const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
 
 console.log('====================================================');
-console.log('  FinServe QA Lab - Learner Submission Validator   ');
+console.log('  FinServe QA Lab - Mission 05 Pipeline Capstone Validator');
 console.log('====================================================\n');
 
 let score = 0;
 const totalPoints = 100;
-const testFiles = [
-  'tests/login.spec.js',
-  'tests/loan-application.spec.js',
-  'tests/regression.spec.js'
+
+console.log('🔍 Checking CI/CD pipeline configuration and full curriculum files...');
+const requiredFiles = [
+  '.github/workflows/qa-pipeline.yml',
+  'tests/uat-acceptance.spec.js',
+  'tests/process-workflow.spec.js',
+  'pages/DashboardPage.js',
+  'test-data/uat-criteria.json'
 ];
 
-// STEP 1: Check if TODO placeholders still exist
-console.log('🔍 Checking code completion in test files...');
-let missingCode = false;
-
-testFiles.forEach(file => {
+let missingFiles = false;
+requiredFiles.forEach(file => {
   const filePath = path.join(__dirname, '..', file);
   if (!fs.existsSync(filePath)) {
     console.error(`❌ Missing file: ${file}`);
-    missingCode = true;
-    return;
-  }
-
-  const content = fs.readFileSync(filePath, 'utf-8');
-  const todoMatches = content.match(/\/\/\s*TODO/gi);
-  if (todoMatches && todoMatches.length > 0) {
-    console.warn(`⚠️  Uncompleted tasks in ${file}: ${todoMatches.length} TODO(s) remaining.`);
-    missingCode = true;
+    missingFiles = true;
   } else {
-    console.log(`✅ ${file} contains completed test code.`);
+    console.log(`✅ Found required file: ${file}`);
   }
 });
 
-if (missingCode) {
-  console.log('\n❌ Submission Incomplete: Please finish all TODO sections before running validation.');
+if (missingFiles) {
+  console.log('\n❌ Capstone Incomplete: Missing required pipeline or test files.');
   process.exit(1);
 }
 
-score += 30; // 30 points for code completion
+const workflowContent = fs.readFileSync(
+  path.join(__dirname, '..', '.github/workflows/qa-pipeline.yml'),
+  'utf8'
+);
+if (workflowContent.includes('TODO FOR LEARNER')) {
+  console.error('❌ Incomplete workflow: Please replace all TODO FOR LEARNER placeholders in qa-pipeline.yml.');
+  process.exit(1);
+}
 
-// STEP 2: Execute Learner Playwright Test Suite
-console.log('\n🚀 Executing Learner Playwright Suite...');
+score += 30;
+
+console.log('\n🚀 Executing Full Playwright Regression & UAT Suite...');
 try {
   execSync('npx playwright test', { stdio: 'inherit' });
-  score += 70; // 70 points for passing all test cases
+  score += 70;
 } catch (error) {
-  console.error('\n❌ Test Execution Failed. Playwright detected test failures or syntax errors.');
+  console.error('\n❌ Test Execution Failed. Playwright detected regressions.');
 }
 
 console.log(`\n====================================================`);
-console.log(`  FINAL LEARNER GRADE: ${score} / ${totalPoints}`);
+console.log(`  FINAL MISSION 05 GRADE: ${score} / ${totalPoints}`);
 console.log(`====================================================`);
 
 if (score >= 80) {
-  console.log('✅ All Playwright assertion checks passed!');
+  console.log('✅ Enterprise CI/CD Quality Gate successfully passed!');
   console.log('\n====================================================');
-  console.log('  FINAL LEARNER GRADE: 100 / 100');
+  console.log('  FINAL GRADE: 100 / 100 - CURRICULUM CAPSTONE ACHIEVED!');
   console.log('====================================================');
-  console.log('🎉 MISSION ACHIEVED: Submission Meets Quality Standards!');
   
   console.log('\n----------------------------------------------------');
-  console.log(' 🏆 SFIA COMPETENCY & TESTING ALIGNMENT');
+  console.log(' 🏆 SFIA COMPETENCY & DEVOPS / TEST ALIGNMENT');
   console.log('----------------------------------------------------');
-  console.log('• Functional Testing (TEST - Level 2/3):');
-  console.log('  Validated specific business rules and functional requirements');
-  console.log('  (such as FR-001 mandatory document validation and FR-002 loan');
-  console.log('  eligibility limits) to ensure FinServe behaves correctly.');
-  console.log('• Quality Assurance & Engineering (SWEN / DESN):');
-  console.log('  Demonstrated professional discipline across automated test execution,');
-  console.log('  script architecture, and quality lifecycle management.');
+  console.log('• Testing (TEST - Level 3) & Release Management (RELM):');
+  console.log('  Configured automated continuous integration quality gates');
+  console.log('  enforcing functional, E2E process, and UAT sign-offs.');
   console.log('----------------------------------------------------\n');
 
   process.exit(0);
 } else {
-  console.log('❌ MISSION NOT ACHIEVED: Please review failing test assertions.');
+  console.log('❌ MISSION NOT ACHIEVED: Please review failing pipeline test assertions.');
   process.exit(1);
 }
+EOF
