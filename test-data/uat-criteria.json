@@ -1,0 +1,11 @@
+{
+  "stakeholderSignOff": {
+    "maxStandardLoanLimit": 0,
+    "minLoanAmount": 0,
+    "expectedConfirmationPrefix": "TODO-",
+    "requiredDisclosures": [
+      "TODO: Add APR disclosure text",
+      "TODO: Add Credit bureau consent text"
+    ]
+  }
+}
