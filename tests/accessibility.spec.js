@@ -1,4 +1,3 @@
-cat << 'EOF' > tests/accessibility.spec.js
 const { test, expect } = require('@playwright/test');
 const AxeBuilder = require('@axe-core/playwright').default;
 
@@ -15,4 +14,3 @@ test.describe('FinServe Accessibility Compliance (NFTS)', () => {
   });
 
 });
-EOF
