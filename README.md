@@ -1,22 +1,20 @@
-# 🎯 Mission 06: Enterprise Resilience, Accessibility (`NFTS`), & Release Promotion (`RELM`)
+# 🎯 Mission 07: API Performance, Concurrency & SLA Benchmarking (`PRTS` & `METL`)
 
 ## 📋 Scenario & Objective
-With functional, end-to-end business process (`BPTS`), and CI quality gates (`QUAS`) operational across Missions 01–05, the FinServe engineering board now mandates two final production-readiness criteria before public launch:
-1. **Non-Functional Compliance (`NFTS`):** Auditing the application to ensure WCAG accessibility compliance for all users.
-2. **Release Management (`RELM`):** Configuring a multi-stage deployment pipeline that promotes verified builds from the QA quality gate to a Staging environment.
+Functional accuracy and accessibility mean little if the FinServe platform crashes under peak payday traffic. Before approving the enterprise release, the architecture team requires automated **Performance & Load Benchmarking (`PRTS`)** to verify that core application routes and endpoints maintain strict Service Level Agreement (SLA) latency thresholds under concurrent user traffic.
 
-In this advanced capstone extension, you will integrate automated Axe-core accessibility scanning into your Playwright suite and extend your GitHub Actions workflow to execute a gated staging promotion.
+Additionally, as an advancing QA engineer, you will document your architectural framework decisions (`METL`) to justify why decoupled browser and API verification patterns were selected for this enterprise stack.
 
 ## 🏆 SFIA Competency Alignment
-* **Non-Functional Testing (`NFTS` – Level 3):** Designing and executing automated accessibility audits within delivery cycles.
-* **Release and Deployment (`RELM` – Level 3):** Enforcing release readiness criteria and managing environment promotion gates.
+* **Performance Testing (`PRTS` – Level 2–3):** Measuring system responsiveness, throughput, and concurrency thresholds against defined SLA latency limits.
+* **Methods and Tools (`METL` – Level 3):** Evaluating and documenting test automation architectures, tool trade-offs, and quality engineering standards.
 
 ---
 
 ## 🛠️ Step-by-Step Instructions
 
-### Step 1: Switch to the `mission-06` Branch
-Branch off from your completed `mission-05` work in your terminal:
+### Step 1: Switch to the `mission-07` Branch
+Branch off from your completed `mission-06` work in your terminal:
 ```bash
-git checkout mission-05
-git checkout -b mission-06
+git checkout mission-06
+git checkout -b mission-07
