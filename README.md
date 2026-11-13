@@ -1,11 +1,16 @@
-# QA-Automation-Playwright-Lab
+# 🏦 FinServe Enterprise QA Automation Lab
 
-Include this specification in your branch instructions so learners know the exact business rules to configure:
+Welcome to the FinServe QA Automation Curriculum. Across five missions, you will evolve from basic functional scripting to enterprise CI/CD pipeline automation.
 
-Maximum Standard Loan Limit (maxStandardLoanLimit): $50,000 (50000)
+## 🗺️ Mission Roadmap
+- **Mission 01 (`mission-01`):** Functional Testing & Core Assertions
+- **Mission 02 (`mission-02`):** Page Object Model (POM) Architecture
+- **Mission 03 (`mission-03`):** End-to-End Process Workflow Testing
+- **Mission 04 (`mission-04`):** User Acceptance Testing (UAT) & Boundary Rules
+- **Mission 05 (`mission-05`):** **CI/CD Pipeline & Quality Gate Capstone** (You will configure GitHub Actions to automatically run and gate your test suites on every push!)
 
-Minimum Loan Floor (minLoanAmount): $5,000 (5000)
-
-Confirmation Reference Prefix (expectedConfirmationPrefix): "FIN-"
-
-Validation Command: Run npm run validate to verify your implementation before committing and pushing to your branch.
+## 🚀 General Workflow Rules for All Missions
+1. **Switch branches:** Always check out the correct mission branch (`git checkout mission-0X`).
+2. **Start your local server:** Keep the application running during local test execution:
+   ```bash
+   npx http-server banking-app -p 3000 &
